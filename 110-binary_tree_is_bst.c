@@ -20,7 +20,7 @@ int binary_tree_is_bst(const binary_tree_t *tree)
 
 	/* Checking if current node's value is greater than */
 	/* the value in the previous node (in-order) */
-	if (prev != NULL && tree->n < prev->n)
+	if (prev != NULL && tree->n <= prev->n)
 		return (0);
 
 	/* Updating the previous node */
