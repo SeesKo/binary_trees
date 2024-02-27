@@ -16,10 +16,12 @@ binary_tree_t *binary_tree_rotate_left(binary_tree_t *tree)
 	/* Setting new root to the right child of the current root */
 	new_root = tree->right;
 
-	/* Updating the right child of the current root to be the left child of the new root */
+	/* Updating the right child of the current root */
+	/* to be the left child of the new root */
 	tree->right = new_root->left;
 
-	/* Update the parent of the new root to be the parent of the current root */
+	/* Updating parent of the new root to be */
+	/* the parent of the current root */
 	if (new_root->left != NULL)
 		new_root->left->parent = tree;
 
