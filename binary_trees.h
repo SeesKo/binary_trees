@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <limits.h>
 
 /**
  * struct binary_tree_s - Binary tree node
@@ -62,5 +63,18 @@ bst_t *bst_remove(bst_t *root, int value);
 int binary_tree_is_avl(const binary_tree_t *tree);
 avl_t *avl_insert(avl_t **tree, int value);
 avl_t *array_to_avl(int *array, size_t size);
+int binary_tree_is_avl(const binary_tree_t *tree);
+int is_balanced(const binary_tree_t *tree, int min, int max);
+int binary_tree_is_bst(const binary_tree_t *tree);
+int is_bst_helper(const binary_tree_t *tree, const binary_tree_t *min,
+		const binary_tree_t *max);
+size_t binary_tree_height(const binary_tree_t *tree);
+
+avl_t *avl_insert(avl_t **tree, int value);
+avl_t *avl_insert_recursive(avl_t *tree, int value);
+avl_t *balance_tree(avl_t *tree);
+int avl_height(const avl_t *tree);
+int avl_balance(const avl_t *tree);
+int max(int a, int b);
 
 #endif /* _BINARY_TREES_H_ */
