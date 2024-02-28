@@ -77,4 +77,10 @@ int avl_height(const avl_t *tree);
 int avl_balance(const avl_t *tree);
 int max(int a, int b);
 
+int binary_tree_is_heap(const binary_tree_t *tree);
+heap_t *heap_insert(heap_t **root, int value);
+heap_t *array_to_heap(int *array, size_t size);
+int heap_extract(heap_t **root);
+int *heap_to_sorted_array(heap_t *heap, size_t *size);
+
 #endif /* _BINARY_TREES_H_ */
