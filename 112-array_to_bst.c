@@ -16,27 +16,10 @@ bst_t *array_to_bst(int *array, size_t size)
 	if (array == NULL || size == 0)
 		return (NULL);
 
-	/* Inserting each element from the array into the BST */
 	for (i = 0; i < size; i++)
 	{
-		/* Using the bst_insert function to insert each element */
 		if (bst_insert(&root, array[i]) == NULL)
-			break;
-	}
-
-	/* Checking if loop ended prematurely (insertion failure) */
-	if (i < size)
-	{
-		/* Cleaning up and returning NULL on failure */
-		while (root != NULL)
-		{
-			bst_t *temp = root;
-
-			root = (array[i] < root->n) ? root->left : root->right;
-			free(temp);
-		}
-
-		return (NULL);
+			return (NULL);
 	}
 
 	return (root);
