@@ -10,14 +10,17 @@
 heap_t *array_to_heap(int *array, size_t size)
 {
 	size_t i;
-	heap_t *root = NULL;
+	heap_t *root_node = NULL;
 
-	if (!array)
+	if (!array || size == 0)
 		return (NULL);
 
-	root = heap_insert(&root, array[0]);
-	for (i = 1; i < size; i++)
-		heap_insert(&root, array[i]);
+	for (i = 0; i < size; i++)
+	{
+		/* Handle failure, free any allocated memory if necessary */
+		if (heap_insert(&root_node, array[i]) == NULL)
+			return (NULL);
+	}
 
-	return (root);
+	return (root_node);
 }
