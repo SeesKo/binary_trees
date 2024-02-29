@@ -87,8 +87,6 @@ int count_nodes(const binary_tree_t *tree);
 int is_max_heap(const binary_tree_t *tree);
 
 heap_t *heap_insert(heap_t **root, int value);
-heap_t *find_parent(heap_t *root);
-
 heap_t *array_to_heap(int *array, size_t size);
 int heap_extract(heap_t **root);
 int *heap_to_sorted_array(heap_t *heap, size_t *size);
