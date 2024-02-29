@@ -11,16 +11,17 @@
 bst_t *array_to_bst(int *array, size_t size)
 {
 	size_t i;
-	bst_t *root = NULL;
+	bst_t *root_node = NULL;
 
 	if (array == NULL || size == 0)
 		return (NULL);
 
+	root_node = bst_insert(&root_node, array[0]);
+
 	for (i = 0; i < size; i++)
 	{
-		if (bst_insert(&root, array[i]) == NULL)
-			return (NULL);
+		bst_insert(&root_node, array[i]);
 	}
 
-	return (root);
+	return (root_node);
 }
