@@ -9,15 +9,15 @@
  */
 heap_t *array_to_heap(int *array, size_t size)
 {
+	size_t i;
 	heap_t *root = NULL;
 
-	if (array && size > 0)
-	{
-		root = heap_insert(&root, array[0]);
+	if (!array)
+		return (NULL);
 
-		for (size_t i = 1; i < size; i++)
-			heap_insert(&root, array[i]);
-	}
+	root = heap_insert(&root, array[0]);
+	for (i = 1; i < size; i++)
+		heap_insert(&root, array[i]);
 
 	return (root);
 }
