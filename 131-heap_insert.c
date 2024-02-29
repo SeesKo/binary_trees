@@ -1,5 +1,12 @@
 #include "binary_trees.h"
 
+void insert_at_end(heap_t *root, heap_t *new_node);
+void find_insert_position_even(heap_t *root, int index, heap_t *new_node);
+void find_insert_position_odd(heap_t *root, int index, heap_t *new_node);
+int count_nodes(const binary_tree_t *tree);
+void heapify_up(heap_t *node);
+void swap_values(heap_t *node1, heap_t *node2);
+
 /**
  * heap_insert - Inserts a value into a Max Binary Heap.
  * @root: Double pointer to the root node of the Heap.
