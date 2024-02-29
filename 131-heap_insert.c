@@ -13,27 +13,22 @@ heap_t *heap_insert(heap_t **root, int value)
 
 	if (!root)
 		return (NULL);
-
 	/* Allocating memory for the new node. */
 	new_node = malloc(sizeof(heap_t));
 	if (!new_node)
 		return (NULL);
-
 	/* Initializing the new node with the given value. */
 	new_node->n = value;
 	new_node->left = NULL;
 	new_node->right = NULL;
-
 	/* If the heap is empty, the new node becomes the root. */
 	if (!*root)
 	{
 		*root = new_node;
 		return (new_node);
 	}
-
 	/* Find the parent for the new node. */
 	parent = find_parent(*root);
-
 	/* Insert the new node as the left or right child of the parent. */
 	if (!parent->left)
 		parent->left = new_node;
@@ -41,17 +36,14 @@ heap_t *heap_insert(heap_t **root, int value)
 		parent->right = new_node;
 
 	new_node->parent = parent;
-
 	/* Maintain the Max Heap property by swapping values with the parent. */
 	while (new_node->parent && new_node->n > new_node->parent->n)
 	{
 		temp = new_node->n;
 		new_node->n = new_node->parent->n;
 		new_node->parent->n = temp;
-
 		new_node = new_node->parent;
 	}
-
 	return (new_node);
 }
 
