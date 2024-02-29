@@ -1,143 +1,83 @@
 #include "binary_trees.h"
 
-void insert_at_end(heap_t *root, heap_t *new_node);
-void find_insert_position_even(heap_t *root, int index, heap_t *new_node);
-void find_insert_position_odd(heap_t *root, int index, heap_t *new_node);
-int count_nodes(const binary_tree_t *tree);
-void heapify_up(heap_t *node);
-void swap_values(heap_t *node1, heap_t *node2);
-
 /**
- * heap_insert - Inserts a value into a Max Binary Heap.
+ * heap_insert - Inserts a value in Max Binary Heap.
  * @root: Double pointer to the root node of the Heap.
  * @value: Value to store in the node to be inserted.
  * Return: Pointer to the created node, or NULL on failure.
  */
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *new_node;
+	heap_t *new_node, *parent;
+	int temp;
 
-	new_node = binary_tree_node(NULL, value);
+	if (!root)
+		return (NULL);
+
+	/* Allocating memory for the new node. */
+	new_node = malloc(sizeof(heap_t));
 	if (!new_node)
 		return (NULL);
 
+	/* Initializing the new node with the given value. */
+	new_node->n = value;
+	new_node->left = NULL;
+	new_node->right = NULL;
+
+	/* If the heap is empty, the new node becomes the root. */
 	if (!*root)
 	{
 		*root = new_node;
 		return (new_node);
 	}
 
-	/* Insert the new node at the end of the Heap */
-	insert_at_end(*root, new_node);
+	/* Find the parent for the new node. */
+	parent = find_parent(*root);
 
-	/* Restore the Max Heap property */
-	heapify_up(new_node);
+	/* Insert the new node as the left or right child of the parent. */
+	if (!parent->left)
+		parent->left = new_node;
+	else
+		parent->right = new_node;
+
+	new_node->parent = parent;
+
+	/* Maintain the Max Heap property by swapping values with the parent. */
+	while (new_node->parent && new_node->n > new_node->parent->n)
+	{
+		temp = new_node->n;
+		new_node->n = new_node->parent->n;
+		new_node->parent->n = temp;
+
+		new_node = new_node->parent;
+	}
 
 	return (new_node);
 }
 
 /**
- * insert_at_end - Inserts a node at the end of the Heap.
+ * find_parent - Finds the parent for the new node in Max Binary Heap.
  * @root: Pointer to the root node of the Heap.
- * @new_node: Pointer to the new node to be inserted.
+ * Return: Pointer to the parent node.
  */
-void insert_at_end(heap_t *root, heap_t *new_node)
+heap_t *find_parent(heap_t *root)
 {
-	int node_count = count_nodes(root);
+	heap_t *parent;
 
-	if (node_count % 2 == 0)
-		find_insert_position_even(root, node_count / 2, new_node);
-	else
-		find_insert_position_odd(root, node_count / 2, new_node);
-}
-
-/**
- * find_insert_position_even - Finds the insert position
- * for a new node in an even level.
- * @root: Pointer to the root node of the Heap.
- * @index: Index to find the insert position.
- * @new_node: Pointer to the new node to be inserted.
- */
-void find_insert_position_even(heap_t *root, int index, heap_t *new_node)
-{
 	if (!root)
-		return;
+		return (NULL);
 
-	if (index == 0)
-	{
-		if (!root->left)
-			root->left = new_node;
-		else
-			root->right = new_node;
-	}
-	else
-	{
-		find_insert_position_even(root->left, index - 1, new_node);
-		find_insert_position_even(root->right, index - 1, new_node);
-	}
-}
+	/* If the root has an empty left or right child, return the root. */
+	if (!root->left || !root->right)
+		return (root);
 
-/**
- * find_insert_position_odd - Finds the insert position for a
- * new node in an odd level.
- * @root: Pointer to the root node of the Heap.
- * @index: Index to find the insert position.
- * @new_node: Pointer to the new node to be inserted.
- */
-void find_insert_position_odd(heap_t *root, int index, heap_t *new_node)
-{
-	if (!root)
-		return;
+	/* Recursively find the parent in the left subtree. */
+	parent = find_parent(root->left);
 
-	if (index == 0)
-	{
-		if (!root->left)
-			root->left = new_node;
-		else
-			root->right = new_node;
-	}
-	else
-	{
-		find_insert_position_odd(root->left, index - 1, new_node);
-		find_insert_position_odd(root->right, index - 1, new_node);
-	}
-}
+	/* If the left subtree is not full, return the current parent. */
+	if (!parent || !parent->left || !parent->right)
+		return (parent);
 
-/**
- * count_nodes - Counts the number of nodes in a binary tree.
- * @tree: Pointer to the root node of the binary tree.
- * Return: Number of nodes in the binary tree.
- */
-int count_nodes(const binary_tree_t *tree)
-{
-	if (!tree)
-		return (0);
-
-	return (1 + count_nodes(tree->left) + count_nodes(tree->right));
-}
-
-/**
- * heapify_up - Restores the Max Heap property after inserting a new node.
- * @node: Pointer to the node from which the heapification starts.
- */
-void heapify_up(heap_t *node)
-{
-	while (node->parent && node->n > node->parent->n)
-	{
-		swap_values(node, node->parent);
-		node = node->parent;
-	}
-}
-
-/**
- * swap_values - Swaps the values of two nodes.
- * @node1: Pointer to the first node.
- * @node2: Pointer to the second node.
- */
-void swap_values(heap_t *node1, heap_t *node2)
-{
-	int temp = node1->n;
-
-	node1->n = node2->n;
-	node2->n = temp;
+	/* If the left subtree is full, continue searching in the right subtree. */
+	return (find_parent(root->right));
 }
